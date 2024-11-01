@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -12,23 +13,27 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get()
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
   findAll() {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.userService.findOneId(+id);
+  // }
+
+  //อันที่ทำเกี่ยวกับ jwt
+  @UseGuards(JwtAuthGuard) // ตรวจ token
+  @Get('profile')
+  async getProfile(@Req() req) {
+    console.log('req', req.user)
+    return await this.userService.findOneId(req.user.id);  // ใช้ req.user.id ที่ถูกแนบมาจาก token เพื่อค้นหาข้อมูลผู้ใช้
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
   }
 }

@@ -22,8 +22,16 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return this.userRepository.findOneBy({id});
+  findOneId(id: number) {
+    return this.userRepository.findOneBy({id: id});
+  }
+
+  async findByEmail(email: string) {
+    return await this.userRepository.findOne({
+      where: {
+        email,
+      }
+    })
   }
 
   // ## การ hash password แบบที่ 2 โดยมีการ hash ใน service 
@@ -37,7 +45,4 @@ export class UserService {
     return await this.userRepository.update({id}, update)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
 }
