@@ -20,6 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             secretOrKey: jwtConfiguration.secret, // ใช้ secret สำหรับตรวจสอบความถูกต้องของ JWT
             //ใช้ secret ที่ตั้งไว้ใน jwt.config.ts เพื่อใช้ในการตรวจสอบความถูกต้องของ JWT ที่ได้รับ 
             //(ทำหน้าที่เหมือนกับ “รหัสลับ” สำหรับตรวจสอบว่า JWT มาจากระบบที่น่าเชื่อถือ)
+
+            ignoreExpiration: false,
         });
     }
 
