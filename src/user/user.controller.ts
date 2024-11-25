@@ -28,8 +28,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard) // ตรวจ token
   @Get('profile')
   async getProfile(@Req() req) {
-    console.log('req', req.user)
-    return await this.userService.findOneId(req.user.id);  // ใช้ req.user.id ที่ถูกแนบมาจาก token เพื่อค้นหาข้อมูลผู้ใช้
+    return await this.userService.getProfile(req.user.id);  
   }
 
   @Patch(':id')

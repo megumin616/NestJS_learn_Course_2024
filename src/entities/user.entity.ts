@@ -25,6 +25,9 @@ export class User {
     @Column({ default: null })
     password: string;
 
+    @Column({ nullable: true })
+    hashedRefreshToken: string;
+
     @OneToMany(() => Property, (property) => property.user)
     //ความสัมพันธ์นี้คือ หนึ่งต่อหลาย (One-to-Many) ซึ่งหมายถึง User หนึ่งคนสามารถมี Property หลายรายการ
     properties: Property[];

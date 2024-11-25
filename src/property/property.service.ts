@@ -75,7 +75,6 @@ export class PropertyService {
       where: { id: propertyId },
     });
 
-    console.log('property', property);
 
     // ตรวจสอบว่า user และ property มีอยู่จริงหรือไม่
     if (user && property) {

@@ -13,6 +13,10 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>
   ) {}
 
+  async updateHashedRefreshToken(userId: number, hashedRefreshToken: string) {
+    return await this.userRepository.update({id: userId}, {hashedRefreshToken})
+  }
+
   async create(createUserDto: CreateUserDto) {
     const user = await this.userRepository.create(createUserDto);
     return await this.userRepository.save(user);
@@ -22,8 +26,15 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOneId(id: number) {
-    return this.userRepository.findOneBy({id: id});
+  findOne(id: number) {
+    return this.userRepository.findOne({
+      where: {id},
+      select: [ 'firstName', 'lastName', 'avatarUrl', 'hashedRefreshToken' ]
+    });
+  }
+
+  async getProfile(id: number) {
+    return this.userRepository.findOneBy({id});
   }
 
   async findByEmail(email: string) {
